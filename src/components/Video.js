@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Tag from './Tag';
 import YouTube from 'react-youtube';
 
 const Video = ({ video }) => {
     const [player, setPlayer] = useState(null);
+    const [comments, setComments] = useState([]);
+    const apiKey = process.env.REACT_APP_API_TOKEN;
 
     const onReady = (event) => {
         setPlayer(event.target);
@@ -22,17 +24,66 @@ const Video = ({ video }) => {
         },
     };
 
+    const filteredCommentByTimeTag = () => {
+        //getAllPagesComments(video.id.videoId, '').then((ytData) => { setComments(ytData); console.log("comments==>"+ytData)});
+
+        /*const filterComments = comments.filter(
+            (comment) => {
+                return comment.snippet.topLevelComment.snippet.textOriginal.match(/[0-5][0-9]:[0-5][0-9]/g);
+            }
+        );
+
+        console.log(filterComments);*/
+    }
+
+    const getOnePageComment = async (videoId, pageToken) => {
+        const url = [
+            'https://www.googleapis.com/youtube/v3/commentThreads?',
+            'part=snippet,replies',
+            'maxResults=10',
+            `videoId=${videoId}`,
+            `key=${apiKey}`,
+            `pageToken=${pageToken}`,
+        ].join('&');
+
+        const response = await fetch(url);
+        const json = await response.json();
+        console.log(json);
+        return json;
+    };
+
+    const getAllPagesComments = (videoId, pageToken) => {
+        // get the comments for the first page by making simple API call
+        return getOnePageComment(videoId, pageToken)
+            .then((result) => {
+                const comments = result.items;
+
+                // Base case: this is the last page
+                if (!result.nextPageToken) return comments;
+
+                // Recursive step: get the rest of the pages, then concat it
+                return getAllPagesComments(videoId, result.nextPageToken)
+                    .then(restOfVideoIds => comments.concat(restOfVideoIds));
+            });
+    };
+
+    useEffect(() => {
+        getOnePageComment(video.id.videoId, '').then((ytData) => { setComments(ytData.items); console.log("comments==>" + ytData); });
+        console.log("effect");
+    }, [])
+
     return (
         <div className="col">
             <div className="card h-100">
                 <div className="ratio ratio-16x9">
-                    <YouTube videoId="f5Vc3kBrbfU" onReady={onReady} containerClassName={"youtubeContainer"} />
+                    <YouTube videoId={video.id.videoId} onReady={onReady} containerClassName={"youtubeContainer"} />
                 </div>
                 <div className="card-body">
-                    <h5 className="card-title">{video.name}</h5>
+                    <h5 className="card-title">{video.snippet.channelTitle}</h5>
                     <p className="card-text">
-                        {
-                            video.comments.map((comment) => (<Tag key={comment.id} onPlayVideo={onPlayVideo} tag={comment.text} />))
+                        {//console.log(comments)
+                            comments.map((comment) => (<Tag key={comment.id} onPlayVideo={onPlayVideo} tag={comment.snippet.topLevelComment.snippet.textOriginal} />))
+                            //<Tag onPlayVideo={onPlayVideo} tag={"C1 V1 comment 00:10"} />//geçici
                         }
                     </p>
                 </div>
@@ -42,32 +93,3 @@ const Video = ({ video }) => {
 }
 
 export default Video;
-
-/*import React from "react";
-import Tag from './Tag';
-
-const Video = ({video}) => {
-
-    return (
-        <div className="col">
-            <div className="card h-100">
-                <div className="ratio ratio-16x9">
-                    <iframe src={video.url} frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen>
-                    </iframe>
-                </div>
-                <div className="card-body">
-                    <h5 className="card-title">{video.name}</h5>
-                    <p className="card-text">
-                        {
-                            video.comments.map((comment)=>(<Tag key={comment.id} tag={comment.text}/>))
-                        }
-                    </p>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-export default Video;*/

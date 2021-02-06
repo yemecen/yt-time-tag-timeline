@@ -34,7 +34,7 @@ const Tag = ({ tag, onPlayVideo }) => {
                         {tag}
                     </Tooltip>
                 }>
-                <Button variant="outline-primary" size="sm" onClick={startVideo}>{ tag.match(/[0-5]?[0-9]:[0-5][0-9]/g) }</Button>
+                <Button variant="outline-primary" size="sm" onClick={startVideo}>{tag.match(/[0-5]?[0-9]:[0-5][0-9]/g)}</Button>
             </OverlayTrigger>)
             }
         </>

@@ -14,7 +14,7 @@ function App() {
 
     setVideos(data);*/
     console.log(`Videos State Type : ${typeof videos}`);
-    if(videos !== undefined) console.log(`Videos State Length : ${videos.length}`) ;
+    if (videos !== undefined) console.log(`Videos State Length : ${videos.length}`);
 
   }, []);
 
@@ -22,7 +22,7 @@ function App() {
 
     event.preventDefault();
 
-    getSearchVideo(event.target.value, '').then((ytData) => { setVideos(ytData.items)});
+    getSearchVideo(event.target.value, '').then((ytData) => { setVideos(ytData.items) });
   }
 
   const getSearchVideo = async (q, pageToken) => {
@@ -47,15 +47,15 @@ function App() {
         <Nav />
       </div>
 
-      <div className="row">
-        <div className="col-md-4">
+      <div className="row position-relative">
+        <div className="col-md-5 g-4 position-absolute top-0 start-50 translate-middle">
           <div className="input-group mb-2">
             <input type="text" className="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" onChange={onChange} />
           </div>
         </div>
       </div>
 
-      <div className="row row-cols-1 row-cols-md-3 g-4 p-1">
+      <div className="row row-cols-1 row-cols-md-3 g-4 p-5">
         {//console.log(`Videos State : ${typeof videos}`)
           videos !== undefined && videos.map((video) => (
             <Video key={video.id.videoId} video={video} />

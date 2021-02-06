@@ -24,18 +24,6 @@ const Video = ({ video }) => {
         },
     };
 
-    const filteredCommentByTimeTag = () => {
-        //getAllPagesComments(video.id.videoId, '').then((ytData) => { setComments(ytData); console.log("comments==>"+ytData)});
-
-        /*const filterComments = comments.filter(
-            (comment) => {
-                return comment.snippet.topLevelComment.snippet.textOriginal.match(/[0-5][0-9]:[0-5][0-9]/g);
-            }
-        );
-
-        console.log(filterComments);*/
-    }
-
     const getOnePageComment = async (videoId, pageToken) => {
         const url = [
             'https://www.googleapis.com/youtube/v3/commentThreads?',
@@ -81,7 +69,7 @@ const Video = ({ video }) => {
                 <div className="card-body">
                     <h5 className="card-title">{video.snippet.channelTitle}</h5>
                     <p className="card-text">
-                        {//console.log(comments)
+                        {   //console.log(comments)
                             comments.map((comment) => (<Tag key={comment.id} onPlayVideo={onPlayVideo} tag={comment.snippet.topLevelComment.snippet.textOriginal} />))
                             //<Tag onPlayVideo={onPlayVideo} tag={"C1 V1 comment 00:10"} />//geçici
                         }

@@ -70,6 +70,7 @@ const Video = ({ video }) => {
                     <h5 className="card-title">{video.snippet.channelTitle}</h5>
                     <p className="card-text">
                         {   //console.log(comments)
+                            comments !=undefined &&
                             comments.map((comment) => (<Tag key={comment.id} onPlayVideo={onPlayVideo} tag={comment.snippet.topLevelComment.snippet.textOriginal} />))
                             //<Tag onPlayVideo={onPlayVideo} tag={"C1 V1 comment 00:10"} />//geçici
                         }

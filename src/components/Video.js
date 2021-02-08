@@ -28,7 +28,7 @@ const Video = ({ video }) => {
         const url = [
             'https://www.googleapis.com/youtube/v3/commentThreads?',
             'part=snippet,replies',
-            'maxResults=10',
+            'maxResults=50',
             `videoId=${videoId}`,
             `key=${apiKey}`,
             `pageToken=${pageToken}`,

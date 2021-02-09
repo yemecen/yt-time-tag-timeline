@@ -17,12 +17,12 @@ const Video = ({ video }) => {
         player.seekTo(second);
     };
 
-    const opts = {
+    /*const opts = {
         frameborder: '0',
         playerVars: {
             autoplay: 0,
         },
-    };
+    };*/
 
     const getOnePageComment = async (videoId, pageToken) => {
         const url = [
@@ -56,9 +56,11 @@ const Video = ({ video }) => {
     };
 
     useEffect(() => {
-        getOnePageComment(video.id.videoId, '').then((ytData) => { setComments(ytData.items); console.log("comments==>" + ytData); });
-        console.log("effect");
-    }, [])
+        getOnePageComment(video.id.videoId, '').then((ytData) => {
+            setComments(ytData.items); //console.log("comments==>" + ytData); 
+        });
+        //console.log("effect");
+    }, []);
 
     return (
         <div className="col">
@@ -69,10 +71,9 @@ const Video = ({ video }) => {
                 <div className="card-body">
                     <h5 className="card-title">{video.snippet.channelTitle}</h5>
                     <p className="card-text">
-                        {   //console.log(comments)
-                            comments !=undefined &&
+                        {
+                            comments !== undefined &&
                             comments.map((comment) => (<Tag key={comment.id} onPlayVideo={onPlayVideo} tag={comment.snippet.topLevelComment.snippet.textOriginal} />))
-                            //<Tag onPlayVideo={onPlayVideo} tag={"C1 V1 comment 00:10"} />//geçici
                         }
                     </p>
                 </div>

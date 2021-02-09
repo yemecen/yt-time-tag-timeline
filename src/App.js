@@ -18,7 +18,7 @@ function App() {
     const url = [
       'https://youtube.googleapis.com/youtube/v3/search?',
       'part=snippet',
-      'maxResults=1',
+      'maxResults=5',
       `q=${q}`,
       `key=${apiKey}`,
       `pageToken=${pageToken}`,
@@ -82,6 +82,16 @@ function App() {
         <Nav />
       </div>
 
+      <div className="row mb-2 mt-4">
+        <div className="col">
+          <nav class="navbar navbar-light bg-light">
+            <div class="container">
+              <span class="navbar-brand mb-0 h1">Youtube comment time stamps</span>
+            </div>
+          </nav>
+        </div>
+      </div>
+      
       <div className="row position-relative">
         <div className="col-md-5 g-4 position-absolute top-0 start-50 translate-middle">
           <div className="input-group mb-2">
